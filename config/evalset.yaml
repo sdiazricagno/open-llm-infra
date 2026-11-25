@@ -1,0 +1,27 @@
+# Small deterministic quality check: short answers graded by substring or number match.
+# It is a smoke test for routing and quantisation regressions, not a leaderboard.
+items:
+  - {id: arith-1, prompt: "What is 17 * 23? Reply with just the number.", kind: number, expect: ["391"]}
+  - {id: arith-2, prompt: "What is 144 divided by 12? Reply with just the number.", kind: number, expect: ["12"]}
+  - {id: arith-3, prompt: "What is 1000 - 357? Reply with just the number.", kind: number, expect: ["643"]}
+  - {id: arith-4, prompt: "A shirt costs $40 and is discounted by 25%. What is the new price in dollars? Reply with just the number.", kind: number, expect: ["30"]}
+  - {id: arith-5, prompt: "If a train travels 60 km per hour for 2.5 hours, how many km does it travel? Reply with just the number.", kind: number, expect: ["150"]}
+  - {id: fact-1, prompt: "What is the capital of Australia? Reply with one word.", kind: contains, expect: ["canberra"]}
+  - {id: fact-2, prompt: "What is the chemical symbol for gold? Reply with the symbol only.", kind: contains, expect: ["au"]}
+  - {id: fact-3, prompt: "How many days are in a leap year? Reply with just the number.", kind: number, expect: ["366"]}
+  - {id: fact-4, prompt: "Which planet is known as the Red Planet? Reply with one word.", kind: contains, expect: ["mars"]}
+  - {id: fact-5, prompt: "What is the largest ocean on Earth? Reply with its name only.", kind: contains, expect: ["pacific"]}
+  - {id: unit-1, prompt: "How many centimetres are in 3.5 metres? Reply with just the number.", kind: number, expect: ["350"]}
+  - {id: unit-2, prompt: "How many minutes are in 2 hours and 15 minutes? Reply with just the number.", kind: number, expect: ["135"]}
+  - {id: logic-1, prompt: "All cats are animals. Tom is a cat. Is Tom an animal? Reply yes or no.", kind: contains, expect: ["yes"]}
+  - {id: logic-2, prompt: "If today is Monday, what day will it be in 3 days? Reply with the day only.", kind: contains, expect: ["thursday"]}
+  - {id: logic-3, prompt: "Alice is taller than Bob. Bob is taller than Carol. Who is the shortest? Reply with the name only.", kind: contains, expect: ["carol"]}
+  - {id: text-1, prompt: "Sort these words alphabetically and reply with them comma-separated: pear, apple, mango", kind: contains, expect: ["apple, mango, pear", "apple,mango,pear"]}
+  - {id: text-2, prompt: "What is the opposite of 'increase'? Reply with one word.", kind: contains, expect: ["decrease", "reduce"]}
+  - {id: text-3, prompt: "Classify the sentiment of this review as positive or negative: 'The battery died after one day and support never replied.'", kind: contains, expect: ["negative"]}
+  - {id: extract-1, prompt: "Extract the email address from: 'Contact the team at data.ops@example.com for access.' Reply with the address only.", kind: contains, expect: ["data.ops@example.com"]}
+  - {id: extract-2, prompt: "From the text 'Invoice 4471 is due on 2026-03-15', what is the due date? Reply in YYYY-MM-DD.", kind: contains, expect: ["2026-03-15"]}
+  - {id: json-1, prompt: "Return only a JSON object with keys \"city\" and \"country\" for Paris.", kind: json_keys, expect: ["city", "country"]}
+  - {id: code-1, prompt: "In Python, what does len([1, 2, 3, 4]) return? Reply with just the number.", kind: number, expect: ["4"]}
+  - {id: code-2, prompt: "In SQL, which keyword removes duplicate rows from a SELECT result? Reply with the keyword only.", kind: contains, expect: ["distinct"]}
+  - {id: code-3, prompt: "In Python, what is the result of 7 // 2? Reply with just the number.", kind: number, expect: ["3"]}

@@ -1,0 +1,55 @@
+vllm:
+  image: vllm/vllm-openai:latest
+  imagePullPolicy: IfNotPresent
+  hfTokenSecret: ""            # existing Secret with key HF_TOKEN, for gated models
+  nodeSelector: {}             # e.g. {cloud.google.com/gke-accelerator: nvidia-l4}
+  tolerations:
+    - key: nvidia.com/gpu
+      operator: Exists
+      effect: NoSchedule
+  shmSize: 4Gi
+  cacheSize: 50Gi
+
+models:
+  - name: qwen2.5-1.5b
+    repo: Qwen/Qwen2.5-1.5B-Instruct
+    enabled: true
+    maxModelLen: 8192
+    gpuMemoryUtilization: 0.90
+    resources:
+      requests: {cpu: "2", memory: 12Gi, nvidia.com/gpu: 1}
+      limits: {memory: 16Gi, nvidia.com/gpu: 1}
+  - name: qwen2.5-7b
+    repo: Qwen/Qwen2.5-7B-Instruct-AWQ
+    enabled: false
+    maxModelLen: 8192
+    gpuMemoryUtilization: 0.90
+    resources:
+      requests: {cpu: "4", memory: 24Gi, nvidia.com/gpu: 1}
+      limits: {memory: 32Gi, nvidia.com/gpu: 1}
+
+autoscaling:
+  enabled: true
+  mode: keda                   # keda (scales to zero) or hpa (needs prometheus-adapter)
+  minReplicas: 0
+  maxReplicas: 4
+  prometheusAddress: http://prometheus-server.monitoring.svc:80
+  waitingRequestsPerReplica: 4
+  cooldownSeconds: 600
+
+gateway:
+  enabled: true
+  image: ghcr.io/berriai/litellm:main-stable
+  replicas: 2
+  masterKeySecret: ""          # existing Secret with key LITELLM_MASTER_KEY; required outside local dev
+  ollamaApiBase: ""            # optional CPU pool, e.g. http://ollama.llm.svc:11434
+  extraEnv: {}                 # e.g. VLLM_MISTRAL_7B_API_BASE pointing at a Cloud Run or EC2 endpoint
+  resources:
+    requests: {cpu: 250m, memory: 512Mi}
+    limits: {memory: 1Gi}
+  service:
+    type: ClusterIP
+    port: 4000
+
+serviceMonitor:
+  enabled: false

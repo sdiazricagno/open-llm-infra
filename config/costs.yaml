@@ -1,0 +1,46 @@
+# List prices are ESTIMATES copied from public pages on the checked date; verify before budgeting.
+# Region us-east-1 / us-central1 (tier 1), Linux, on-demand, USD per hour, excluding storage and egress.
+checked: "2026-11-25"
+instances:
+  - id: aws-c7i.2xlarge
+    provider: AWS EC2
+    accelerator: none (8 vCPU, 16 GiB)
+    vram_gb: 0
+    usd_per_hour: 0.357
+    billing: per-second, always on
+    source: https://aws.amazon.com/ec2/pricing/on-demand/
+  - id: aws-g4dn.xlarge
+    provider: AWS EC2
+    accelerator: 1x NVIDIA T4
+    vram_gb: 16
+    usd_per_hour: 0.526
+    billing: per-second, always on (spot cheaper, interruptible)
+    source: https://aws.amazon.com/ec2/pricing/on-demand/
+  - id: aws-g6.xlarge
+    provider: AWS EC2
+    accelerator: 1x NVIDIA L4
+    vram_gb: 24
+    usd_per_hour: 0.8048
+    billing: per-second, always on (spot cheaper, interruptible)
+    source: https://aws.amazon.com/ec2/pricing/on-demand/
+  - id: aws-g5.xlarge
+    provider: AWS EC2
+    accelerator: 1x NVIDIA A10G
+    vram_gb: 24
+    usd_per_hour: 1.006
+    billing: per-second, always on
+    source: https://aws.amazon.com/ec2/pricing/on-demand/
+  - id: aws-g6e.xlarge
+    provider: AWS EC2
+    accelerator: 1x NVIDIA L40S
+    vram_gb: 48
+    usd_per_hour: 1.861
+    billing: per-second, always on
+    source: https://aws.amazon.com/ec2/pricing/on-demand/
+  - id: gcp-cloudrun-l4
+    provider: Google Cloud Run (serverless GPU)
+    accelerator: 1x NVIDIA L4, 4 vCPU, 16 GiB, no zonal redundancy
+    vram_gb: 24
+    usd_per_hour: 1.0465
+    billing: per-second while an instance exists, scales to zero
+    source: https://cloud.google.com/run/pricing

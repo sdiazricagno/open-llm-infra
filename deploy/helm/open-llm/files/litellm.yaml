@@ -1,0 +1,393 @@
+# Rendered from config/models.yaml by `make gateway`; edit the registry, not this file.
+# Backends are resolved from environment variables, so the same file serves compose, k8s and cloud.
+model_list:
+- model_name: qwen2.5-0.5b
+  litellm_params:
+    model: hosted_vllm/Qwen/Qwen2.5-0.5B-Instruct
+    api_base: os.environ/VLLM_QWEN2_5_0_5B_API_BASE
+    api_key: os.environ/VLLM_API_KEY
+    order: 1
+  model_info:
+    backend: vllm
+    family: Qwen2.5
+    params_b: 0.5
+- model_name: qwen2.5-0.5b
+  litellm_params:
+    model: ollama_chat/qwen2.5:0.5b
+    api_base: os.environ/OLLAMA_API_BASE
+    order: 2
+  model_info:
+    backend: ollama
+    family: Qwen2.5
+    params_b: 0.5
+- model_name: qwen2.5-0.5b@cpu
+  litellm_params:
+    model: ollama_chat/qwen2.5:0.5b
+    api_base: os.environ/OLLAMA_API_BASE
+    order: 2
+  model_info:
+    backend: ollama
+    family: Qwen2.5
+    params_b: 0.5
+- model_name: qwen2.5-0.5b@gpu
+  litellm_params:
+    model: hosted_vllm/Qwen/Qwen2.5-0.5B-Instruct
+    api_base: os.environ/VLLM_QWEN2_5_0_5B_API_BASE
+    api_key: os.environ/VLLM_API_KEY
+    order: 1
+  model_info:
+    backend: vllm
+    family: Qwen2.5
+    params_b: 0.5
+- model_name: qwen2.5-1.5b
+  litellm_params:
+    model: hosted_vllm/Qwen/Qwen2.5-1.5B-Instruct
+    api_base: os.environ/VLLM_QWEN2_5_1_5B_API_BASE
+    api_key: os.environ/VLLM_API_KEY
+    order: 1
+  model_info:
+    backend: vllm
+    family: Qwen2.5
+    params_b: 1.5
+- model_name: qwen2.5-1.5b
+  litellm_params:
+    model: ollama_chat/qwen2.5:1.5b
+    api_base: os.environ/OLLAMA_API_BASE
+    order: 2
+  model_info:
+    backend: ollama
+    family: Qwen2.5
+    params_b: 1.5
+- model_name: qwen2.5-1.5b@cpu
+  litellm_params:
+    model: ollama_chat/qwen2.5:1.5b
+    api_base: os.environ/OLLAMA_API_BASE
+    order: 2
+  model_info:
+    backend: ollama
+    family: Qwen2.5
+    params_b: 1.5
+- model_name: qwen2.5-1.5b@gpu
+  litellm_params:
+    model: hosted_vllm/Qwen/Qwen2.5-1.5B-Instruct
+    api_base: os.environ/VLLM_QWEN2_5_1_5B_API_BASE
+    api_key: os.environ/VLLM_API_KEY
+    order: 1
+  model_info:
+    backend: vllm
+    family: Qwen2.5
+    params_b: 1.5
+- model_name: qwen2.5-7b
+  litellm_params:
+    model: hosted_vllm/Qwen/Qwen2.5-7B-Instruct-AWQ
+    api_base: os.environ/VLLM_QWEN2_5_7B_API_BASE
+    api_key: os.environ/VLLM_API_KEY
+    order: 1
+  model_info:
+    backend: vllm
+    family: Qwen2.5
+    params_b: 7.6
+- model_name: qwen2.5-7b
+  litellm_params:
+    model: ollama_chat/qwen2.5:7b
+    api_base: os.environ/OLLAMA_API_BASE
+    order: 2
+  model_info:
+    backend: ollama
+    family: Qwen2.5
+    params_b: 7.6
+- model_name: qwen2.5-7b@cpu
+  litellm_params:
+    model: ollama_chat/qwen2.5:7b
+    api_base: os.environ/OLLAMA_API_BASE
+    order: 2
+  model_info:
+    backend: ollama
+    family: Qwen2.5
+    params_b: 7.6
+- model_name: qwen2.5-7b@gpu
+  litellm_params:
+    model: hosted_vllm/Qwen/Qwen2.5-7B-Instruct-AWQ
+    api_base: os.environ/VLLM_QWEN2_5_7B_API_BASE
+    api_key: os.environ/VLLM_API_KEY
+    order: 1
+  model_info:
+    backend: vllm
+    family: Qwen2.5
+    params_b: 7.6
+- model_name: llama3.2-1b
+  litellm_params:
+    model: hosted_vllm/meta-llama/Llama-3.2-1B-Instruct
+    api_base: os.environ/VLLM_LLAMA3_2_1B_API_BASE
+    api_key: os.environ/VLLM_API_KEY
+    order: 1
+  model_info:
+    backend: vllm
+    family: Llama 3.2
+    params_b: 1.2
+- model_name: llama3.2-1b
+  litellm_params:
+    model: ollama_chat/llama3.2:1b
+    api_base: os.environ/OLLAMA_API_BASE
+    order: 2
+  model_info:
+    backend: ollama
+    family: Llama 3.2
+    params_b: 1.2
+- model_name: llama3.2-1b@cpu
+  litellm_params:
+    model: ollama_chat/llama3.2:1b
+    api_base: os.environ/OLLAMA_API_BASE
+    order: 2
+  model_info:
+    backend: ollama
+    family: Llama 3.2
+    params_b: 1.2
+- model_name: llama3.2-1b@gpu
+  litellm_params:
+    model: hosted_vllm/meta-llama/Llama-3.2-1B-Instruct
+    api_base: os.environ/VLLM_LLAMA3_2_1B_API_BASE
+    api_key: os.environ/VLLM_API_KEY
+    order: 1
+  model_info:
+    backend: vllm
+    family: Llama 3.2
+    params_b: 1.2
+- model_name: llama3.2-3b
+  litellm_params:
+    model: hosted_vllm/meta-llama/Llama-3.2-3B-Instruct
+    api_base: os.environ/VLLM_LLAMA3_2_3B_API_BASE
+    api_key: os.environ/VLLM_API_KEY
+    order: 1
+  model_info:
+    backend: vllm
+    family: Llama 3.2
+    params_b: 3.2
+- model_name: llama3.2-3b
+  litellm_params:
+    model: ollama_chat/llama3.2:3b
+    api_base: os.environ/OLLAMA_API_BASE
+    order: 2
+  model_info:
+    backend: ollama
+    family: Llama 3.2
+    params_b: 3.2
+- model_name: llama3.2-3b@cpu
+  litellm_params:
+    model: ollama_chat/llama3.2:3b
+    api_base: os.environ/OLLAMA_API_BASE
+    order: 2
+  model_info:
+    backend: ollama
+    family: Llama 3.2
+    params_b: 3.2
+- model_name: llama3.2-3b@gpu
+  litellm_params:
+    model: hosted_vllm/meta-llama/Llama-3.2-3B-Instruct
+    api_base: os.environ/VLLM_LLAMA3_2_3B_API_BASE
+    api_key: os.environ/VLLM_API_KEY
+    order: 1
+  model_info:
+    backend: vllm
+    family: Llama 3.2
+    params_b: 3.2
+- model_name: phi3.5-mini
+  litellm_params:
+    model: hosted_vllm/microsoft/Phi-3.5-mini-instruct
+    api_base: os.environ/VLLM_PHI3_5_MINI_API_BASE
+    api_key: os.environ/VLLM_API_KEY
+    order: 1
+  model_info:
+    backend: vllm
+    family: Phi-3.5
+    params_b: 3.8
+- model_name: phi3.5-mini
+  litellm_params:
+    model: ollama_chat/phi3.5:3.8b
+    api_base: os.environ/OLLAMA_API_BASE
+    order: 2
+  model_info:
+    backend: ollama
+    family: Phi-3.5
+    params_b: 3.8
+- model_name: phi3.5-mini@cpu
+  litellm_params:
+    model: ollama_chat/phi3.5:3.8b
+    api_base: os.environ/OLLAMA_API_BASE
+    order: 2
+  model_info:
+    backend: ollama
+    family: Phi-3.5
+    params_b: 3.8
+- model_name: phi3.5-mini@gpu
+  litellm_params:
+    model: hosted_vllm/microsoft/Phi-3.5-mini-instruct
+    api_base: os.environ/VLLM_PHI3_5_MINI_API_BASE
+    api_key: os.environ/VLLM_API_KEY
+    order: 1
+  model_info:
+    backend: vllm
+    family: Phi-3.5
+    params_b: 3.8
+- model_name: gemma2-2b
+  litellm_params:
+    model: hosted_vllm/google/gemma-2-2b-it
+    api_base: os.environ/VLLM_GEMMA2_2B_API_BASE
+    api_key: os.environ/VLLM_API_KEY
+    order: 1
+  model_info:
+    backend: vllm
+    family: Gemma 2
+    params_b: 2.6
+- model_name: gemma2-2b
+  litellm_params:
+    model: ollama_chat/gemma2:2b
+    api_base: os.environ/OLLAMA_API_BASE
+    order: 2
+  model_info:
+    backend: ollama
+    family: Gemma 2
+    params_b: 2.6
+- model_name: gemma2-2b@cpu
+  litellm_params:
+    model: ollama_chat/gemma2:2b
+    api_base: os.environ/OLLAMA_API_BASE
+    order: 2
+  model_info:
+    backend: ollama
+    family: Gemma 2
+    params_b: 2.6
+- model_name: gemma2-2b@gpu
+  litellm_params:
+    model: hosted_vllm/google/gemma-2-2b-it
+    api_base: os.environ/VLLM_GEMMA2_2B_API_BASE
+    api_key: os.environ/VLLM_API_KEY
+    order: 1
+  model_info:
+    backend: vllm
+    family: Gemma 2
+    params_b: 2.6
+- model_name: mistral-7b
+  litellm_params:
+    model: hosted_vllm/mistralai/Mistral-7B-Instruct-v0.3
+    api_base: os.environ/VLLM_MISTRAL_7B_API_BASE
+    api_key: os.environ/VLLM_API_KEY
+    order: 1
+  model_info:
+    backend: vllm
+    family: Mistral
+    params_b: 7.2
+- model_name: mistral-7b
+  litellm_params:
+    model: ollama_chat/mistral:7b
+    api_base: os.environ/OLLAMA_API_BASE
+    order: 2
+  model_info:
+    backend: ollama
+    family: Mistral
+    params_b: 7.2
+- model_name: mistral-7b@cpu
+  litellm_params:
+    model: ollama_chat/mistral:7b
+    api_base: os.environ/OLLAMA_API_BASE
+    order: 2
+  model_info:
+    backend: ollama
+    family: Mistral
+    params_b: 7.2
+- model_name: mistral-7b@gpu
+  litellm_params:
+    model: hosted_vllm/mistralai/Mistral-7B-Instruct-v0.3
+    api_base: os.environ/VLLM_MISTRAL_7B_API_BASE
+    api_key: os.environ/VLLM_API_KEY
+    order: 1
+  model_info:
+    backend: vllm
+    family: Mistral
+    params_b: 7.2
+- model_name: llamacpp
+  litellm_params:
+    model: openai/local
+    api_base: os.environ/LLAMACPP_API_BASE
+    api_key: none
+  model_info:
+    backend: llama.cpp
+- model_name: fast
+  litellm_params:
+    model: hosted_vllm/Qwen/Qwen2.5-0.5B-Instruct
+    api_base: os.environ/VLLM_QWEN2_5_0_5B_API_BASE
+    api_key: os.environ/VLLM_API_KEY
+    order: 1
+  model_info:
+    backend: vllm
+    family: Qwen2.5
+    params_b: 0.5
+- model_name: fast
+  litellm_params:
+    model: ollama_chat/qwen2.5:0.5b
+    api_base: os.environ/OLLAMA_API_BASE
+    order: 2
+  model_info:
+    backend: ollama
+    family: Qwen2.5
+    params_b: 0.5
+- model_name: balanced
+  litellm_params:
+    model: hosted_vllm/Qwen/Qwen2.5-1.5B-Instruct
+    api_base: os.environ/VLLM_QWEN2_5_1_5B_API_BASE
+    api_key: os.environ/VLLM_API_KEY
+    order: 1
+  model_info:
+    backend: vllm
+    family: Qwen2.5
+    params_b: 1.5
+- model_name: balanced
+  litellm_params:
+    model: ollama_chat/qwen2.5:1.5b
+    api_base: os.environ/OLLAMA_API_BASE
+    order: 2
+  model_info:
+    backend: ollama
+    family: Qwen2.5
+    params_b: 1.5
+- model_name: quality
+  litellm_params:
+    model: hosted_vllm/Qwen/Qwen2.5-7B-Instruct-AWQ
+    api_base: os.environ/VLLM_QWEN2_5_7B_API_BASE
+    api_key: os.environ/VLLM_API_KEY
+    order: 1
+  model_info:
+    backend: vllm
+    family: Qwen2.5
+    params_b: 7.6
+- model_name: quality
+  litellm_params:
+    model: ollama_chat/qwen2.5:7b
+    api_base: os.environ/OLLAMA_API_BASE
+    order: 2
+  model_info:
+    backend: ollama
+    family: Qwen2.5
+    params_b: 7.6
+router_settings:
+  routing_strategy: simple-shuffle
+  num_retries: 1
+  timeout: 300
+  allowed_fails: 1
+  cooldown_time: 30
+litellm_settings:
+  callbacks:
+  - prometheus
+  fallbacks:
+  - fast:
+    - llama3.2-1b
+  - balanced:
+    - gemma2-2b
+    - qwen2.5-0.5b
+  - quality:
+    - mistral-7b
+    - llama3.2-3b
+  drop_params: true
+  request_timeout: 300
+general_settings:
+  master_key: os.environ/LITELLM_MASTER_KEY

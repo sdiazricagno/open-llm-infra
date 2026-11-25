@@ -1,0 +1,82 @@
+# Model registry: the single source of truth for every backend and for the gateway config.
+# gguf -> llama.cpp server, ollama -> Ollama tag, vllm -> Hugging Face repo served by vLLM on GPU.
+# size_gb is the real Q4_K_M GGUF file size on Hugging Face. min_vram_gb is a rough fp16/AWQ guide.
+models:
+  - name: qwen2.5-0.5b
+    family: Qwen2.5
+    params_b: 0.5
+    license: Apache-2.0
+    context: 32768
+    tier: tiny
+    gguf: {repo: Qwen/Qwen2.5-0.5B-Instruct-GGUF, file: qwen2.5-0.5b-instruct-q4_k_m.gguf, size_gb: 0.49}
+    ollama: qwen2.5:0.5b
+    vllm: {repo: Qwen/Qwen2.5-0.5B-Instruct, gated: false, min_vram_gb: 4}
+  - name: qwen2.5-1.5b
+    family: Qwen2.5
+    params_b: 1.5
+    license: Apache-2.0
+    context: 32768
+    tier: small
+    gguf: {repo: Qwen/Qwen2.5-1.5B-Instruct-GGUF, file: qwen2.5-1.5b-instruct-q4_k_m.gguf, size_gb: 1.12}
+    ollama: qwen2.5:1.5b
+    vllm: {repo: Qwen/Qwen2.5-1.5B-Instruct, gated: false, min_vram_gb: 6}
+  - name: qwen2.5-7b
+    family: Qwen2.5
+    params_b: 7.6
+    license: Apache-2.0
+    context: 32768
+    tier: medium
+    gguf: {repo: bartowski/Qwen2.5-7B-Instruct-GGUF, file: Qwen2.5-7B-Instruct-Q4_K_M.gguf, size_gb: 4.68}
+    ollama: qwen2.5:7b
+    vllm: {repo: Qwen/Qwen2.5-7B-Instruct-AWQ, gated: false, min_vram_gb: 12}
+  - name: llama3.2-1b
+    family: Llama 3.2
+    params_b: 1.2
+    license: Llama 3.2 Community
+    context: 131072
+    tier: tiny
+    gguf: {repo: bartowski/Llama-3.2-1B-Instruct-GGUF, file: Llama-3.2-1B-Instruct-Q4_K_M.gguf, size_gb: 0.81}
+    ollama: llama3.2:1b
+    vllm: {repo: meta-llama/Llama-3.2-1B-Instruct, gated: true, min_vram_gb: 6}
+  - name: llama3.2-3b
+    family: Llama 3.2
+    params_b: 3.2
+    license: Llama 3.2 Community
+    context: 131072
+    tier: small
+    gguf: {repo: bartowski/Llama-3.2-3B-Instruct-GGUF, file: Llama-3.2-3B-Instruct-Q4_K_M.gguf, size_gb: 2.02}
+    ollama: llama3.2:3b
+    vllm: {repo: meta-llama/Llama-3.2-3B-Instruct, gated: true, min_vram_gb: 10}
+  - name: phi3.5-mini
+    family: Phi-3.5
+    params_b: 3.8
+    license: MIT
+    context: 131072
+    tier: small
+    gguf: {repo: bartowski/Phi-3.5-mini-instruct-GGUF, file: Phi-3.5-mini-instruct-Q4_K_M.gguf, size_gb: 2.39}
+    ollama: phi3.5:3.8b
+    vllm: {repo: microsoft/Phi-3.5-mini-instruct, gated: false, min_vram_gb: 10}
+  - name: gemma2-2b
+    family: Gemma 2
+    params_b: 2.6
+    license: Gemma
+    context: 8192
+    tier: small
+    gguf: {repo: bartowski/gemma-2-2b-it-GGUF, file: gemma-2-2b-it-Q4_K_M.gguf, size_gb: 1.71}
+    ollama: gemma2:2b
+    vllm: {repo: google/gemma-2-2b-it, gated: true, min_vram_gb: 8}
+  - name: mistral-7b
+    family: Mistral
+    params_b: 7.2
+    license: Apache-2.0
+    context: 32768
+    tier: medium
+    gguf: {repo: bartowski/Mistral-7B-Instruct-v0.3-GGUF, file: Mistral-7B-Instruct-v0.3-Q4_K_M.gguf, size_gb: 4.37}
+    ollama: mistral:7b
+    vllm: {repo: mistralai/Mistral-7B-Instruct-v0.3, gated: true, min_vram_gb: 20}
+
+# Stable names clients can use; each alias resolves to a primary model plus ordered fallbacks.
+aliases:
+  fast: [qwen2.5-0.5b, llama3.2-1b]
+  balanced: [qwen2.5-1.5b, gemma2-2b, qwen2.5-0.5b]
+  quality: [qwen2.5-7b, mistral-7b, llama3.2-3b]
