@@ -1,0 +1,51 @@
+{
+  "model": "qwen2.5-0.5b",
+  "base_url": "http://127.0.0.1:18101/v1",
+  "backend": "llama.cpp direct",
+  "started_at": "2026-11-26T00:06:07+00:00",
+  "host": {
+    "cpu": "Intel(R) Xeon(R) Processor",
+    "logical_cpus": 8,
+    "os": "Linux-6.12.113+-x86_64-with-glibc2.41",
+    "python": "3.13.5"
+  },
+  "load_avg_start": [
+    5.72,
+    5.04,
+    5.88
+  ],
+  "cold_start_s": 0.09,
+  "concurrency": [
+    {
+      "concurrency": 1,
+      "requests": 8,
+      "wall_s": 9.185,
+      "total_completion_tokens": 951,
+      "aggregate_tps": 103.53,
+      "ttft_p50_s": 0.03,
+      "ttft_p95_s": 0.055,
+      "latency_p50_s": 1.121,
+      "latency_p95_s": 1.5,
+      "decode_tps_mean": 107.0
+    },
+    {
+      "concurrency": 4,
+      "requests": 8,
+      "wall_s": 5.007,
+      "total_completion_tokens": 947,
+      "aggregate_tps": 189.14,
+      "ttft_p50_s": 0.073,
+      "ttft_p95_s": 0.108,
+      "latency_p50_s": 2.187,
+      "latency_p95_s": 2.819,
+      "decode_tps_mean": 54.18
+    }
+  ],
+  "quality": null,
+  "max_tokens": 128,
+  "load_avg_end": [
+    6.3,
+    5.2,
+    5.92
+  ]
+}

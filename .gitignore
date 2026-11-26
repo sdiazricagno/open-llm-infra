@@ -6,6 +6,7 @@ __pycache__/
 models/
 results/*.server.log
 results/gateway/
+!results/gateway-overhead/
 .terraform/
 *.tfstate
 *.tfstate.*

@@ -1,0 +1,91 @@
+{
+  "model": "qwen2.5-0.5b",
+  "base_url": "http://127.0.0.1:18100/v1",
+  "backend": "llama.cpp (CPU, Q4_K_M)",
+  "started_at": "2026-11-26T00:03:06+00:00",
+  "host": {
+    "cpu": "Intel(R) Xeon(R) Processor",
+    "logical_cpus": 8,
+    "os": "Linux-6.12.113+-x86_64-with-glibc2.41",
+    "python": "3.13.5"
+  },
+  "load_avg_start": [
+    4.1,
+    3.24,
+    5.55
+  ],
+  "cold_start_s": 1.43,
+  "concurrency": [
+    {
+      "concurrency": 1,
+      "requests": 8,
+      "wall_s": 11.693,
+      "total_completion_tokens": 1014,
+      "aggregate_tps": 86.72,
+      "ttft_p50_s": 0.079,
+      "ttft_p95_s": 0.268,
+      "latency_p50_s": 1.36,
+      "latency_p95_s": 1.793,
+      "decode_tps_mean": 94.17
+    },
+    {
+      "concurrency": 2,
+      "requests": 8,
+      "wall_s": 8.094,
+      "total_completion_tokens": 1009,
+      "aggregate_tps": 124.66,
+      "ttft_p50_s": 0.053,
+      "ttft_p95_s": 0.123,
+      "latency_p50_s": 1.975,
+      "latency_p95_s": 2.277,
+      "decode_tps_mean": 65.22
+    },
+    {
+      "concurrency": 4,
+      "requests": 8,
+      "wall_s": 4.178,
+      "total_completion_tokens": 953,
+      "aggregate_tps": 228.12,
+      "ttft_p50_s": 0.066,
+      "ttft_p95_s": 0.073,
+      "latency_p50_s": 2.066,
+      "latency_p95_s": 2.113,
+      "decode_tps_mean": 62.74
+    }
+  ],
+  "quality": {
+    "correct": 19,
+    "total": 24,
+    "accuracy": 0.792,
+    "failures": [
+      {
+        "id": "arith-1",
+        "answer": "441"
+      },
+      {
+        "id": "arith-4",
+        "answer": "$20"
+      },
+      {
+        "id": "fact-1",
+        "answer": "Sydney"
+      },
+      {
+        "id": "unit-2",
+        "answer": "2 hours and 15 minutes is 145 minutes."
+      },
+      {
+        "id": "logic-2",
+        "answer": "Friday"
+      }
+    ]
+  },
+  "params_b": 0.5,
+  "size_gb": 0.49,
+  "max_tokens": 128,
+  "load_avg_end": [
+    6.11,
+    3.81,
+    5.66
+  ]
+}

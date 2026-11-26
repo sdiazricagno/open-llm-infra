@@ -1,0 +1,99 @@
+{
+  "model": "llama3.2-1b",
+  "base_url": "http://127.0.0.1:18100/v1",
+  "backend": "llama.cpp (CPU, Q4_K_M)",
+  "started_at": "2026-11-26T00:03:35+00:00",
+  "host": {
+    "cpu": "Intel(R) Xeon(R) Processor",
+    "logical_cpus": 8,
+    "os": "Linux-6.12.113+-x86_64-with-glibc2.41",
+    "python": "3.13.5"
+  },
+  "load_avg_start": [
+    6.11,
+    3.81,
+    5.66
+  ],
+  "cold_start_s": 1.14,
+  "concurrency": [
+    {
+      "concurrency": 1,
+      "requests": 8,
+      "wall_s": 21.026,
+      "total_completion_tokens": 980,
+      "aggregate_tps": 46.61,
+      "ttft_p50_s": 0.03,
+      "ttft_p95_s": 0.059,
+      "latency_p50_s": 2.606,
+      "latency_p95_s": 3.017,
+      "decode_tps_mean": 47.08
+    },
+    {
+      "concurrency": 2,
+      "requests": 8,
+      "wall_s": 17.563,
+      "total_completion_tokens": 958,
+      "aggregate_tps": 54.55,
+      "ttft_p50_s": 0.04,
+      "ttft_p95_s": 0.115,
+      "latency_p50_s": 3.921,
+      "latency_p95_s": 6.671,
+      "decode_tps_mean": 28.96
+    },
+    {
+      "concurrency": 4,
+      "requests": 8,
+      "wall_s": 9.489,
+      "total_completion_tokens": 953,
+      "aggregate_tps": 100.43,
+      "ttft_p50_s": 0.067,
+      "ttft_p95_s": 0.136,
+      "latency_p50_s": 3.885,
+      "latency_p95_s": 5.742,
+      "decode_tps_mean": 28.19
+    }
+  ],
+  "quality": {
+    "correct": 17,
+    "total": 24,
+    "accuracy": 0.708,
+    "failures": [
+      {
+        "id": "arith-4",
+        "answer": "$32"
+      },
+      {
+        "id": "arith-5",
+        "answer": "122 km"
+      },
+      {
+        "id": "unit-1",
+        "answer": "30"
+      },
+      {
+        "id": "unit-2",
+        "answer": "127"
+      },
+      {
+        "id": "logic-1",
+        "answer": "No"
+      },
+      {
+        "id": "logic-2",
+        "answer": "Tuesday"
+      },
+      {
+        "id": "code-1",
+        "answer": "6"
+      }
+    ]
+  },
+  "params_b": 1.2,
+  "size_gb": 0.81,
+  "max_tokens": 128,
+  "load_avg_end": [
+    7.65,
+    4.62,
+    5.84
+  ]
+}
