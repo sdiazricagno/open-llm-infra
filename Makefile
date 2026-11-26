@@ -58,6 +58,6 @@ tf-check:  ## terraform fmt + validate for every environment
 helm-check:  ## Lint and render the chart
 	helm lint deploy/helm/open-llm && helm template t deploy/helm/open-llm >/dev/null
 
-check: lint test tf-check helm-check  ## Everything CI runs
+check: lint test tf-check helm-check  ## All checks: lint, tests, gateway freshness, Terraform, Helm, compose
 	$(PYTHON) -m openllm gateway --check
 	$(COMPOSE) config -q
