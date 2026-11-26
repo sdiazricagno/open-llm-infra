@@ -1,5 +1,7 @@
 # open-llm-infra
 
+[![ci](https://github.com/sdiazricagno/open-llm-infra/actions/workflows/ci.yml/badge.svg)](https://github.com/sdiazricagno/open-llm-infra/actions/workflows/ci.yml)
+
 Run many cheap open-source LLMs on a laptop, a single GPU box or the cloud, behind one OpenAI-compatible endpoint.
 
 The same model registry drives every layer: Ollama and llama.cpp on CPU, vLLM on GPU, a LiteLLM gateway with
