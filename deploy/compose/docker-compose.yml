@@ -1,0 +1,157 @@
+name: open-llm-infra
+
+x-health: &health
+  interval: 15s
+  timeout: 5s
+  retries: 20
+  start_period: 30s
+
+x-restart: &restart
+  restart: unless-stopped
+
+services:
+  ollama:
+    <<: *restart
+    image: ${OLLAMA_IMAGE:-ollama/ollama:latest}
+    volumes:
+      - ollama-models:/root/.ollama
+    environment:
+      OLLAMA_KEEP_ALIVE: ${OLLAMA_KEEP_ALIVE:-10m}
+      OLLAMA_MAX_LOADED_MODELS: ${OLLAMA_MAX_LOADED_MODELS:-2}
+      OLLAMA_NUM_PARALLEL: ${OLLAMA_NUM_PARALLEL:-4}
+    ports:
+      - "11434:11434"
+    healthcheck:
+      <<: *health
+      test: ["CMD", "ollama", "list"]
+
+  model-puller:
+    image: ${OLLAMA_IMAGE:-ollama/ollama:latest}
+    depends_on:
+      ollama:
+        condition: service_healthy
+    environment:
+      OLLAMA_HOST: http://ollama:11434
+      MODELS: ${OLLAMA_MODELS:-qwen2.5:0.5b llama3.2:1b qwen2.5:1.5b}
+    entrypoint: ["/bin/sh", "-c", "for m in $$MODELS; do ollama pull $$m || exit 1; done"]
+    restart: "no"
+
+  llamacpp:
+    <<: *restart
+    image: ${LLAMACPP_IMAGE:-ghcr.io/ggml-org/llama.cpp:server}
+    command:
+      - --hf-repo
+      - ${LLAMACPP_HF_REPO:-Qwen/Qwen2.5-0.5B-Instruct-GGUF}
+      - --hf-file
+      - ${LLAMACPP_HF_FILE:-qwen2.5-0.5b-instruct-q4_k_m.gguf}
+      - --host
+      - 0.0.0.0
+      - --port
+      - "8080"
+      - --parallel
+      - ${LLAMACPP_PARALLEL:-4}
+      - --ctx-size
+      - ${LLAMACPP_CTX:-8192}
+      - --metrics
+    volumes:
+      - llamacpp-cache:/root/.cache/llama.cpp
+    ports:
+      - "8080:8080"
+    healthcheck:
+      <<: *health
+      test: ["CMD", "curl", "-fsS", "http://localhost:8080/health"]
+      start_period: 120s
+
+  vllm:
+    <<: *restart
+    profiles: ["gpu"]
+    image: ${VLLM_IMAGE:-vllm/vllm-openai:latest}
+    command:
+      - --model
+      - ${VLLM_MODEL:-Qwen/Qwen2.5-1.5B-Instruct}
+      - --served-model-name
+      - ${VLLM_MODEL:-Qwen/Qwen2.5-1.5B-Instruct}
+      - --max-model-len
+      - ${VLLM_MAX_MODEL_LEN:-8192}
+      - --gpu-memory-utilization
+      - ${VLLM_GPU_MEM:-0.90}
+    environment:
+      HF_TOKEN: ${HF_TOKEN:-}
+    volumes:
+      - hf-cache:/root/.cache/huggingface
+    ipc: host
+    ports:
+      - "8000:8000"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    healthcheck:
+      <<: *health
+      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      start_period: 300s
+
+  gateway:
+    <<: *restart
+    image: ${LITELLM_IMAGE:-ghcr.io/berriai/litellm:main-stable}
+    command: ["--config", "/app/litellm.yaml", "--port", "4000"]
+    depends_on:
+      ollama:
+        condition: service_healthy
+    environment:
+      OLLAMA_API_BASE: http://ollama:11434
+      LLAMACPP_API_BASE: http://llamacpp:8080/v1
+      VLLM_QWEN2_5_1_5B_API_BASE: ${VLLM_QWEN2_5_1_5B_API_BASE:-http://vllm:8000/v1}
+      LITELLM_MASTER_KEY: ${LITELLM_MASTER_KEY:-}
+      LITELLM_DANGEROUSLY_PERMIT_WEAK_OR_UNSET_MASTER_KEY: ${LITELLM_LOCAL_NO_AUTH:-true}
+    volumes:
+      - ../../gateway/litellm.yaml:/app/litellm.yaml:ro
+    ports:
+      - "4000:4000"
+    healthcheck:
+      <<: *health
+      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:4000/health/liveliness')"]
+
+  prometheus:
+    <<: *restart
+    image: ${PROMETHEUS_IMAGE:-prom/prometheus:v2.55.1}
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.retention.time=7d
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+    ports:
+      - "9090:9090"
+    healthcheck:
+      <<: *health
+      test: ["CMD", "wget", "-qO-", "http://localhost:9090/-/healthy"]
+
+  grafana:
+    <<: *restart
+    image: ${GRAFANA_IMAGE:-grafana/grafana:11.3.1}
+    depends_on:
+      prometheus:
+        condition: service_healthy
+    environment:
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Viewer
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
+      - grafana-data:/var/lib/grafana
+    ports:
+      - "3000:3000"
+    healthcheck:
+      <<: *health
+      test: ["CMD", "wget", "-qO-", "http://localhost:3000/api/health"]
+
+volumes:
+  ollama-models:
+  llamacpp-cache:
+  hf-cache:
+  prometheus-data:
+  grafana-data:

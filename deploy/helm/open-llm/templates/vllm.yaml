@@ -1,0 +1,135 @@
+{{- range .Values.models }}
+{{- if .enabled }}
+{{- $name := printf "%s-vllm-%s" $.Release.Name (include "open-llm.k8sName" .name) | trunc 63 | trimSuffix "-" }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $name }}
+  labels:
+    {{- include "open-llm.labels" $ | nindent 4 }}
+    app.kubernetes.io/name: {{ $name }}
+    app.kubernetes.io/component: vllm
+spec:
+  replicas: {{ if $.Values.autoscaling.enabled }}{{ max 1 $.Values.autoscaling.minReplicas }}{{ else }}1{{ end }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ $name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ $name }}
+        app.kubernetes.io/component: vllm
+    spec:
+      {{- with $.Values.vllm.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with $.Values.vllm.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: vllm
+          image: {{ $.Values.vllm.image }}
+          imagePullPolicy: {{ $.Values.vllm.imagePullPolicy }}
+          args:
+            - --model={{ .repo }}
+            - --served-model-name={{ .repo }}
+            - --max-model-len={{ .maxModelLen }}
+            - --gpu-memory-utilization={{ .gpuMemoryUtilization }}
+          ports:
+            - name: http
+              containerPort: 8000
+          {{- if $.Values.vllm.hfTokenSecret }}
+          env:
+            - name: HF_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $.Values.vllm.hfTokenSecret }}
+                  key: HF_TOKEN
+          {{- end }}
+          startupProbe:
+            httpGet: {path: /health, port: http}
+            periodSeconds: 10
+            failureThreshold: 90
+          readinessProbe:
+            httpGet: {path: /health, port: http}
+            periodSeconds: 10
+          livenessProbe:
+            httpGet: {path: /health, port: http}
+            periodSeconds: 30
+            failureThreshold: 5
+          resources:
+            {{- toYaml .resources | nindent 12 }}
+          volumeMounts:
+            - {name: shm, mountPath: /dev/shm}
+            - {name: hf-cache, mountPath: /root/.cache/huggingface}
+      volumes:
+        - name: shm
+          emptyDir: {medium: Memory, sizeLimit: {{ $.Values.vllm.shmSize }}}
+        - name: hf-cache
+          emptyDir: {sizeLimit: {{ $.Values.vllm.cacheSize }}}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $name }}
+  labels:
+    {{- include "open-llm.labels" $ | nindent 4 }}
+    app.kubernetes.io/component: vllm
+spec:
+  selector:
+    app.kubernetes.io/name: {{ $name }}
+  ports:
+    - name: http
+      port: 8000
+      targetPort: http
+{{- if $.Values.autoscaling.enabled }}
+{{- if eq $.Values.autoscaling.mode "keda" }}
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: {{ $name }}
+spec:
+  scaleTargetRef:
+    name: {{ $name }}
+  minReplicaCount: {{ $.Values.autoscaling.minReplicas }}
+  maxReplicaCount: {{ $.Values.autoscaling.maxReplicas }}
+  cooldownPeriod: {{ $.Values.autoscaling.cooldownSeconds }}
+  triggers:
+    - type: prometheus
+      metadata:
+        serverAddress: {{ $.Values.autoscaling.prometheusAddress }}
+        query: sum(vllm:num_requests_waiting{service="{{ $name }}"}) + sum(vllm:num_requests_running{service="{{ $name }}"})
+        threshold: {{ $.Values.autoscaling.waitingRequestsPerReplica | quote }}
+        activationThreshold: "0"
+{{- else }}
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ $name }}
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ $name }}
+  minReplicas: {{ max 1 $.Values.autoscaling.minReplicas }}
+  maxReplicas: {{ $.Values.autoscaling.maxReplicas }}
+  metrics:
+    - type: Pods
+      pods:
+        metric:
+          name: vllm_num_requests_waiting
+        target:
+          type: AverageValue
+          averageValue: {{ $.Values.autoscaling.waitingRequestsPerReplica | quote }}
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: {{ $.Values.autoscaling.cooldownSeconds }}
+{{- end }}
+{{- end }}
+{{- end }}
+{{- end }}

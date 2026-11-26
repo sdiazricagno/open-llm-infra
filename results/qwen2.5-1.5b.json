@@ -1,0 +1,75 @@
+{
+  "model": "qwen2.5-1.5b",
+  "base_url": "http://127.0.0.1:18100/v1",
+  "backend": "llama.cpp (CPU, Q4_K_M)",
+  "started_at": "2026-11-26T00:04:29+00:00",
+  "host": {
+    "cpu": "Intel(R) Xeon(R) Processor",
+    "logical_cpus": 8,
+    "os": "Linux-6.12.113+-x86_64-with-glibc2.41",
+    "python": "3.13.5"
+  },
+  "load_avg_start": [
+    7.65,
+    4.62,
+    5.84
+  ],
+  "cold_start_s": 2.12,
+  "concurrency": [
+    {
+      "concurrency": 1,
+      "requests": 8,
+      "wall_s": 25.206,
+      "total_completion_tokens": 971,
+      "aggregate_tps": 38.52,
+      "ttft_p50_s": 0.042,
+      "ttft_p95_s": 0.099,
+      "latency_p50_s": 3.163,
+      "latency_p95_s": 3.611,
+      "decode_tps_mean": 39.06
+    },
+    {
+      "concurrency": 2,
+      "requests": 8,
+      "wall_s": 16.762,
+      "total_completion_tokens": 987,
+      "aggregate_tps": 58.88,
+      "ttft_p50_s": 0.065,
+      "ttft_p95_s": 0.127,
+      "latency_p50_s": 4.224,
+      "latency_p95_s": 4.367,
+      "decode_tps_mean": 30.27
+    },
+    {
+      "concurrency": 4,
+      "requests": 8,
+      "wall_s": 9.14,
+      "total_completion_tokens": 931,
+      "aggregate_tps": 101.85,
+      "ttft_p50_s": 0.121,
+      "ttft_p95_s": 0.231,
+      "latency_p50_s": 4.488,
+      "latency_p95_s": 4.651,
+      "decode_tps_mean": 28.71
+    }
+  ],
+  "quality": {
+    "correct": 23,
+    "total": 24,
+    "accuracy": 0.958,
+    "failures": [
+      {
+        "id": "logic-2",
+        "answer": "Friday"
+      }
+    ]
+  },
+  "params_b": 1.5,
+  "size_gb": 1.12,
+  "max_tokens": 128,
+  "load_avg_end": [
+    8.06,
+    5.25,
+    5.98
+  ]
+}

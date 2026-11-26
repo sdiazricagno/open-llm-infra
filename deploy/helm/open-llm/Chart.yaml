@@ -1,0 +1,6 @@
+apiVersion: v2
+name: open-llm
+description: vLLM model servers with GPU autoscaling plus a LiteLLM gateway rendered from the shared model registry.
+type: application
+version: 0.1.0
+appVersion: "0.1.0"

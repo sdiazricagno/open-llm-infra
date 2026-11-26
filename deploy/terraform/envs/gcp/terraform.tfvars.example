@@ -1,0 +1,3 @@
+project_id              = "my-gcp-project"
+region                  = "us-central1"
+gateway_service_account = "llm-gateway@my-gcp-project.iam.gserviceaccount.com"

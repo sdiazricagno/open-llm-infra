@@ -1,0 +1,11 @@
+#!/bin/bash
+set -euo pipefail
+HF_TOKEN=""
+if [ -n "${hf_token_ssm_parameter}" ]; then
+  HF_TOKEN=$(aws ssm get-parameter --with-decryption --name "${hf_token_ssm_parameter}" \
+    --query Parameter.Value --output text --region "${region}")
+fi
+mkdir -p /opt/hf-cache
+docker run -d --restart unless-stopped --gpus all --ipc=host -p 8000:8000 \
+  -e HF_TOKEN="$HF_TOKEN" -v /opt/hf-cache:/root/.cache/huggingface \
+  "${vllm_image}" --model "${model}" --served-model-name "${model}" --max-model-len ${max_model_len}

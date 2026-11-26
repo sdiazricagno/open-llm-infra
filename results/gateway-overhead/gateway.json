@@ -1,0 +1,51 @@
+{
+  "model": "qwen2.5-0.5b",
+  "base_url": "http://127.0.0.1:4997/v1",
+  "backend": "LiteLLM gateway -> llama.cpp",
+  "started_at": "2026-11-26T00:06:21+00:00",
+  "host": {
+    "cpu": "Intel(R) Xeon(R) Processor",
+    "logical_cpus": 8,
+    "os": "Linux-6.12.113+-x86_64-with-glibc2.41",
+    "python": "3.13.5"
+  },
+  "load_avg_start": [
+    6.3,
+    5.2,
+    5.92
+  ],
+  "cold_start_s": 0.3,
+  "concurrency": [
+    {
+      "concurrency": 1,
+      "requests": 8,
+      "wall_s": 11.17,
+      "total_completion_tokens": 952,
+      "aggregate_tps": 85.23,
+      "ttft_p50_s": 0.037,
+      "ttft_p95_s": 0.062,
+      "latency_p50_s": 1.197,
+      "latency_p95_s": 2.566,
+      "decode_tps_mean": 94.13
+    },
+    {
+      "concurrency": 4,
+      "requests": 8,
+      "wall_s": 4.688,
+      "total_completion_tokens": 968,
+      "aggregate_tps": 206.5,
+      "ttft_p50_s": 0.072,
+      "ttft_p95_s": 0.121,
+      "latency_p50_s": 2.228,
+      "latency_p95_s": 2.47,
+      "decode_tps_mean": 57.58
+    }
+  ],
+  "quality": null,
+  "max_tokens": 128,
+  "load_avg_end": [
+    7.03,
+    5.42,
+    5.98
+  ]
+}
